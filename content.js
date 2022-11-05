@@ -1,23 +1,8 @@
-/* global window, fetch, retry, debug, PQueue  */
-
-if (typeof window === "undefined") {
-  global.URL = (await import("node:url")).URL;
-  global.fetch = (await import("node-fetch")).default;
-  global.debug = (await import("debug")).default;
-  global.retry = (await import("async-retry")).default;
-  global.PQueue = (await import("p-queue")).default;
-} else {
-  window.debug = () => () => {};
-  // TODO: Compile these out properly?
-  window.retry = (passThrough) => passThrough();
-  class _PQueue {
-    constructor() {}
-    add(passThrough) {
-      return passThrough();
-    }
-  }
-  window.PQueue = _PQueue;
-}
+import { URL } from "node:url";
+import fetch from "node-fetch";
+import retry from "async-retry";
+import debug from "debug";
+import PQueue from "p-queue";
 
 export default class ContentAPI {
   constructor() {

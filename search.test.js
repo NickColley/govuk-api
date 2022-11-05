@@ -187,5 +187,23 @@ async function suite() {
     const results = await client.total("Micro pigs");
     assert.is(results, 1234);
   });
+
+  test("queue", async (assert) => {
+    const queries = ["Register to vote", "Micro pig", "Equality Act 2010"];
+    assert.plan(queries.length);
+
+    let count = 0;
+    const client = new SearchAPI();
+    client.queue.on("completed", (response) => {
+      assert.deepEqual(
+        String(response.results.href),
+        "https://www.gov.uk/api/search.json?" +
+          new URLSearchParams({ q: queries[count] })
+      );
+      count++;
+    });
+    queries.forEach((query) => client.get(query));
+    await client.queue.onIdle();
+  });
 }
 suite();

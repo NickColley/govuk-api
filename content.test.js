@@ -57,30 +57,5 @@ async function suite() {
     paths.forEach((path) => api.get(path));
     await api.queue.onIdle();
   });
-
-  test("stream", async (assert) => {
-    const paths = [
-      "/register-to-vote",
-      "/guidance/keeping-a-pet-pig-or-micropig",
-      "/guidance/equality-act-2010-guidance",
-    ];
-    assert.plan(paths.length);
-
-    let count = 0;
-    const api = new ContentAPI();
-    const stream = api.stream();
-    stream.on("data", (chunk) => {
-      assert.deepEqual(chunk, {
-        baseUrl: new URL("https://www.gov.uk/api/content" + paths[count]),
-      });
-      count++;
-    });
-
-    paths.forEach((path) => api.get(path));
-
-    await new Promise((resolve) => {
-      stream.on("end", resolve);
-    });
-  });
 }
 suite();

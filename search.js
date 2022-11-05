@@ -1,16 +1,8 @@
-/* global window, fetch, retry, debug */
-
-if (typeof window === "undefined") {
-  global.URL = (await import("node:url")).URL;
-  global.URLSearchParams = (await import("node:url")).URLSearchParams;
-  global.fetch = (await import("node-fetch")).default;
-  global.debug = (await import("debug")).default;
-  global.retry = (await import("async-retry")).default;
-} else {
-  window.debug = () => () => {};
-  // TODO: Compile these out properly?
-  window.retry = (passThrough) => passThrough();
-}
+import { URL, URLSearchParams } from "node:url";
+import fetch from "node-fetch";
+import retry from "async-retry";
+import debug from "debug";
+import PQueue from "p-queue";
 
 const getStartValues = (total, count) => {
   if (!total || !count) {
@@ -40,6 +32,14 @@ export default class SearchAPI {
       debug("govuk:search")("Default search options:");
       debug("govuk:search")(this.defaultOptions);
     }
+
+    // Search API doesnt seem to have a rate limit...
+    // https://dataingovernment.blog.gov.uk/2016/05/26/use-the-search-api-to-get-useful-information-about-gov-uk-content/
+    // https://docs.publishing.service.gov.uk/repos/search-api/using-the-search-api.html
+    const queueOptions = {};
+    debug("govuk:search")("Queue options:");
+    debug("govuk:search")(queueOptions);
+    this.queue = new PQueue(queueOptions);
   }
 
   #parseArguments(queryOrOptions, maybeOptions) {
@@ -68,9 +68,6 @@ export default class SearchAPI {
     };
   }
 
-  // Search API doesnt seem to have a rate limit...
-  // https://dataingovernment.blog.gov.uk/2016/05/26/use-the-search-api-to-get-useful-information-about-gov-uk-content/
-  // https://docs.publishing.service.gov.uk/repos/search-api/using-the-search-api.html
   async #get(options) {
     debug("govuk:search:get")("Search options:");
     debug("govuk:search:get")(options);
@@ -121,9 +118,10 @@ export default class SearchAPI {
     debug("govuk:search:get")(String(baseUrl));
     // Sometimes GOV.UK Apis can be flakey when they're cold so retry if they fail.
     return await retry(async () => {
-      const response = await fetch(baseUrl);
-      const json = await response.json();
-      return json;
+      return await this.queue.add(async () => {
+        const response = await fetch(baseUrl);
+        return await response.json();
+      });
     });
   }
 
