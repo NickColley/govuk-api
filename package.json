@@ -23,7 +23,12 @@
   "files": [
     "index.js",
     "search.js",
-    "content.js"
+    "content.js",
+    "dist/index.cjs",
+    "dist/index.modern.js",
+    "dist/index.cjs",
+    "dist/index.module.js",
+    "dist/index.umd.js"
   ],
   "dependencies": {
     "async-retry": "^1.3.3",
