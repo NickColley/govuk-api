@@ -1,23 +1,25 @@
-import { URL } from "node:url";
+import EventEmitter from "eventemitter3";
 import fetch from "node-fetch";
 import retry from "async-retry";
 import debug from "debug";
-import PQueue from "p-queue";
+import throttledQueue from "throttled-queue";
 
-export default class ContentAPI {
+// https://content-api.publishing.service.gov.uk/#rate-limiting
+// API says only 10 requests per second so batch requests using a queue system to avoid this.
+// Global throttle between instances, to avoid multiple clients from sending too many requests.
+const requestsPerInterval = 10;
+const secondsBetweenIntervals = 1;
+const throttle = throttledQueue(
+  requestsPerInterval,
+  secondsBetweenIntervals * 1000,
+  true
+);
+
+export default class ContentAPI extends EventEmitter {
   constructor() {
-    // https://content-api.publishing.service.gov.uk/#rate-limiting
-    // API says only 10 requests per second so batch requests using a queue system to avoid this.
-
-    const queueOptions = { interval: 1000, intervalCap: 10 };
-    debug("govuk:content")("Queue options:");
-    debug("govuk:content")(queueOptions);
-    this.queue = new PQueue(queueOptions);
+    super();
   }
 
-  // Search API doesnt seem to have a rate limit...
-  // https://dataingovernment.blog.gov.uk/2016/05/26/use-the-search-api-to-get-useful-information-about-gov-uk-content/
-  // https://docs.publishing.service.gov.uk/repos/search-api/using-the-search-api.html
   async get(path) {
     if (!path) {
       throw new Error("No content item path");
@@ -28,13 +30,15 @@ export default class ContentAPI {
     }
     const baseUrl = new URL(`https://www.gov.uk/api/content/${trimmedPath}`);
 
-    debug("govuk:content:get")("Getting content item:", baseUrl.pathname);
     // Sometimes GOV.UK Apis can be flakey when they're cold so retry if they fail.
-    return await retry(async () => {
-      return await this.queue.add(async () => {
+    return throttle(() =>
+      retry(async () => {
+        debug("govuk:content:get")("Getting content item:", baseUrl.pathname);
         const response = await fetch(baseUrl);
-        return await response.json();
-      });
-    });
+        const json = await response.json();
+        this.emit("data", json);
+        return json;
+      })
+    );
   }
 }

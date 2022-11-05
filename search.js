@@ -1,8 +1,20 @@
-import { URL, URLSearchParams } from "node:url";
+import EventEmitter from "eventemitter3";
 import fetch from "node-fetch";
 import retry from "async-retry";
 import debug from "debug";
-import PQueue from "p-queue";
+import throttledQueue from "throttled-queue";
+
+// https://dataingovernment.blog.gov.uk/2016/05/26/use-the-search-api-to-get-useful-information-about-gov-uk-content/
+// https://docs.publishing.service.gov.uk/repos/search-api/using-the-search-api.html
+// Search API doesnt seem to have a rate limit, so do something sensible.
+// Global throttle between instances, to avoid multiple clients from sending too many requests.
+const requestsPerInterval = 10;
+const secondsBetweenIntervals = 1;
+const throttle = throttledQueue(
+  requestsPerInterval,
+  secondsBetweenIntervals * 1000,
+  true
+);
 
 const getStartValues = (total, count) => {
   if (!total || !count) {
@@ -19,8 +31,9 @@ const getStartValues = (total, count) => {
 
 const MAX_PER_PAGE = 1000;
 
-export default class SearchAPI {
+export default class SearchAPI extends EventEmitter {
   constructor() {
+    super();
     const { q, ...options } = this.#parseArguments(...arguments);
     this.defaultQuery = q;
     this.defaultOptions = options;
@@ -32,14 +45,6 @@ export default class SearchAPI {
       debug("govuk:search")("Default search options:");
       debug("govuk:search")(this.defaultOptions);
     }
-
-    // Search API doesnt seem to have a rate limit...
-    // https://dataingovernment.blog.gov.uk/2016/05/26/use-the-search-api-to-get-useful-information-about-gov-uk-content/
-    // https://docs.publishing.service.gov.uk/repos/search-api/using-the-search-api.html
-    const queueOptions = {};
-    debug("govuk:search")("Queue options:");
-    debug("govuk:search")(queueOptions);
-    this.queue = new PQueue(queueOptions);
   }
 
   #parseArguments(queryOrOptions, maybeOptions) {
@@ -111,22 +116,19 @@ export default class SearchAPI {
         params.append(key, otherOptions[key]);
       }
     });
-    debug("govuk:search:get")("Search parameters:");
-    debug("govuk:search:get")(params);
     baseUrl.search = params;
-    debug("govuk:search:get")("Search URL:");
-    debug("govuk:search:get")(String(baseUrl));
     // Sometimes GOV.UK Apis can be flakey when they're cold so retry if they fail.
-    return await retry(async () => {
-      return await this.queue.add(async () => {
+    return throttle(() =>
+      retry(async () => {
+        debug("govuk:search:get")("Getting search item:", String(baseUrl));
         const response = await fetch(baseUrl);
-        return await response.json();
-      });
-    });
+        return response.json();
+      })
+    );
   }
 
   async getAll() {
-    const { count, ...options } = this.#parseArguments(...arguments);
+    const { count, total, ...options } = this.#parseArguments(...arguments);
 
     const perPage = typeof count === "undefined" ? MAX_PER_PAGE : count;
     debug("govuk:search:getAll")("Search options:");
@@ -135,8 +137,8 @@ export default class SearchAPI {
       throw new Error("No search query");
     }
     debug("govuk:search:getAll")("Getting total results...");
-    const total = await this.total(options);
-    const startValues = getStartValues(total, perPage);
+    const actualTotal = total || (await this.total(options));
+    const startValues = getStartValues(actualTotal, perPage);
     debug("govuk:search:getAll")(`Total results found: ${total}`);
     debug("govuk:search:getAll")(`Per page: "${perPage}"`);
     debug("govuk:search:getAll")(
@@ -167,6 +169,8 @@ export default class SearchAPI {
   async get() {
     const options = this.#parseArguments(...arguments);
     const response = await this.#get(options);
-    return response.results || [];
+    const results = response.results || [];
+    this.emit("data", results);
+    return results;
   }
 }

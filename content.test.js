@@ -38,7 +38,7 @@ async function suite() {
     });
   });
 
-  test("queue", async (assert) => {
+  test("events", async (assert) => {
     const paths = [
       "/register-to-vote",
       "/guidance/keeping-a-pet-pig-or-micropig",
@@ -48,14 +48,19 @@ async function suite() {
 
     let count = 0;
     const api = new ContentAPI();
-    api.queue.on("completed", (result) => {
-      assert.deepEqual(result, {
-        baseUrl: new URL("https://www.gov.uk/api/content" + paths[count]),
-      });
-      count++;
-    });
+
     paths.forEach((path) => api.get(path));
-    await api.queue.onIdle();
+    return new Promise((resolve) => {
+      api.on("data", (result) => {
+        assert.deepEqual(result, {
+          baseUrl: new URL("https://www.gov.uk/api/content" + paths[count]),
+        });
+        count++;
+        if (count === paths.length) {
+          resolve();
+        }
+      });
+    });
   });
 }
 suite();

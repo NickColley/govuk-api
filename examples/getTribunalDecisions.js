@@ -18,30 +18,28 @@ async function main() {
   const searchItems = await searchAPI.getAll(query);
 
   const contentApi = new ContentAPI();
-  // Dont resolve the requests immediately so we can stream them later.
-  contentApi.queue.pause();
 
   // Schedule each request...
   searchItems.forEach((result) => contentApi.get(result.link));
 
   const jsonStream = JSONStream.stringify("[", ",\n", "]" + os.EOL);
-  const filePath = "data.json";
+  const filePath = "examples/data.json";
   const writeableStream = createWriteStream(filePath);
   jsonStream.pipe(writeableStream).on("finish", () => {
     console.log(`Wrote results to "${filePath}".`);
     console.timeEnd("Finished");
   });
 
-  contentApi.queue.start();
   let count = 0;
-  contentApi.queue.on("completed", (contentItem) => {
-    console.log(`${count++}: "${contentItem.title}"`);
+  contentApi.on("data", (contentItem) => {
     jsonStream.write(contentItem);
-  });
-  // When the queue is idle, then end the stream...
-  await contentApi.queue.onIdle();
-  process.nextTick(() => {
-    jsonStream.end();
+    count++;
+    console.log(`${count}: "${contentItem.title}"`);
+    if (count === total) {
+      process.nextTick(() => {
+        jsonStream.end();
+      });
+    }
   });
 }
 main();

@@ -17,8 +17,8 @@ async function suite() {
   }));
 
   test("constructor › default query", async (assert) => {
-    const client = new SearchAPI("Register to vote");
-    const results = await client.get();
+    const api = new SearchAPI("Register to vote");
+    const results = await api.get();
     assert.deepEqual(
       String(results),
       "https://www.gov.uk/api/search.json?q=Register+to+vote"
@@ -26,8 +26,8 @@ async function suite() {
   });
 
   test("constructor › default options", async (assert) => {
-    const client = new SearchAPI({ filter_format: "guide" });
-    const results = await client.get();
+    const api = new SearchAPI({ filter_format: "guide" });
+    const results = await api.get();
     assert.deepEqual(
       String(results),
       "https://www.gov.uk/api/search.json?filter_format=guide"
@@ -35,18 +35,18 @@ async function suite() {
   });
 
   test("get › should blow up if given nothing", async (assert) => {
-    const client = new SearchAPI();
+    const api = new SearchAPI();
     await assert.throwsAsync(
       async () => {
-        await client.get();
+        await api.get();
       },
       { instanceOf: Error, message: "No search query" }
     );
   });
 
   test("get › should search for something if given a string", async (assert) => {
-    const client = new SearchAPI();
-    const results = await client.get("Register to vote");
+    const api = new SearchAPI();
+    const results = await api.get("Register to vote");
     assert.deepEqual(
       String(results),
       "https://www.gov.uk/api/search.json?q=Register+to+vote"
@@ -54,8 +54,8 @@ async function suite() {
   });
 
   test("get › should allow q parameter", async (assert) => {
-    const client = new SearchAPI();
-    const results = await client.get({ q: "Register to vote" });
+    const api = new SearchAPI();
+    const results = await api.get({ q: "Register to vote" });
     assert.deepEqual(
       String(results),
       "https://www.gov.uk/api/search.json?q=Register+to+vote"
@@ -63,8 +63,8 @@ async function suite() {
   });
 
   test("get › should allow count parameter", async (assert) => {
-    const client = new SearchAPI();
-    const results = await client.get("Register to vote", { count: 50 });
+    const api = new SearchAPI();
+    const results = await api.get("Register to vote", { count: 50 });
     assert.deepEqual(
       String(results),
       "https://www.gov.uk/api/search.json?q=Register+to+vote&count=50"
@@ -72,8 +72,8 @@ async function suite() {
   });
 
   test("get › should allow start parameter", async (assert) => {
-    const client = new SearchAPI();
-    const results = await client.get("Register to vote", { start: 50 });
+    const api = new SearchAPI();
+    const results = await api.get("Register to vote", { start: 50 });
     assert.deepEqual(
       String(results),
       "https://www.gov.uk/api/search.json?q=Register+to+vote&start=50"
@@ -81,8 +81,8 @@ async function suite() {
   });
 
   test("get › should allow order parameter", async (assert) => {
-    const client = new SearchAPI();
-    const results = await client.get("Register to vote", { order: "asc" });
+    const api = new SearchAPI();
+    const results = await api.get("Register to vote", { order: "asc" });
     assert.deepEqual(
       String(results),
       "https://www.gov.uk/api/search.json?q=Register+to+vote&order=asc"
@@ -90,18 +90,18 @@ async function suite() {
   });
 
   test("get › should blow up if fields parameter is not an array", async (assert) => {
-    const client = new SearchAPI();
+    const api = new SearchAPI();
     await assert.throwsAsync(
       async () => {
-        await client.get("Register to vote", { fields: "string" });
+        await api.get("Register to vote", { fields: "string" });
       },
       { instanceOf: Error, message: "Fields parameter must be an array" }
     );
   });
 
   test("get › should allow fields parameter", async (assert) => {
-    const client = new SearchAPI();
-    const results = await client.get("Register to vote", {
+    const api = new SearchAPI();
+    const results = await api.get("Register to vote", {
       fields: ["title", "link"],
     });
     assert.deepEqual(
@@ -111,8 +111,8 @@ async function suite() {
   });
 
   test("get › should allow faceted filter_ parameter", async (assert) => {
-    const client = new SearchAPI();
-    const results = await client.get({
+    const api = new SearchAPI();
+    const results = await api.get({
       filter_format: "statistics_announcement",
     });
     assert.deepEqual(
@@ -122,8 +122,8 @@ async function suite() {
   });
 
   test("get › should allow faceted reject_ parameter", async (assert) => {
-    const client = new SearchAPI();
-    const results = await client.get({
+    const api = new SearchAPI();
+    const results = await api.get({
       reject_format: "statistics_announcement",
     });
     assert.deepEqual(
@@ -132,9 +132,18 @@ async function suite() {
     );
   });
 
+  test("get › should return empty results if falsey results", async (assert) => {
+    const SearchAPIWithFalseyResults = await mockAPI(() => ({}));
+    const api = new SearchAPIWithFalseyResults();
+    const results = await api.get({
+      aggregate_format: "statistics_announcement",
+    });
+    assert.deepEqual(results, []);
+  });
+
   test("get › should allow faceted aggregate_ parameter", async (assert) => {
-    const client = new SearchAPI();
-    const results = await client.get({
+    const api = new SearchAPI();
+    const results = await api.get({
       aggregate_format: "statistics_announcement",
     });
     assert.deepEqual(
@@ -144,10 +153,10 @@ async function suite() {
   });
 
   test("getAll › should blow up with no search query", async (assert) => {
-    const client = new SearchAPI();
+    const api = new SearchAPI();
     await assert.throwsAsync(
       async () => {
-        await client.getAll();
+        await api.getAll();
       },
       { instanceOf: Error, message: "No search query" }
     );
@@ -158,14 +167,14 @@ async function suite() {
       total: 0,
       results: baseUrl,
     }));
-    const client = new SearchAPIWithNoResults();
-    const results = await client.getAll("Something that results no items");
+    const api = new SearchAPIWithNoResults();
+    const results = await api.getAll("Something that results no items");
     assert.deepEqual(results, []);
   });
 
   test("getAll › should return all items matching search query", async (assert) => {
-    const client = new SearchAPI();
-    const results = await client.getAll("Micro pigs");
+    const api = new SearchAPI();
+    const results = await api.getAll("Micro pigs");
     assert.deepEqual(
       results.map((result) => String(result)),
       [
@@ -178,32 +187,52 @@ async function suite() {
     );
   });
 
+  test("getAll › should use different count", async (assert) => {
+    const api = new SearchAPI({ count: 990 });
+    const results = await api.getAll("Micro pigs");
+    assert.deepEqual(
+      results.map((result) => String(result)),
+      [
+        "https://www.gov.uk/api/search.json?q=Micro+pigs&count=990",
+        "https://www.gov.uk/api/search.json?q=Micro+pigs&count=990&start=990",
+        "https://www.gov.uk/api/search.json?q=Micro+pigs&count=990&start=1980",
+        "https://www.gov.uk/api/search.json?q=Micro+pigs&count=990&start=2970",
+        "https://www.gov.uk/api/search.json?q=Micro+pigs&count=990&start=3960",
+        "https://www.gov.uk/api/search.json?q=Micro+pigs&count=990&start=4950",
+      ]
+    );
+  });
+
   test("total › should total for items", async (assert) => {
     const SearchAPIWithACustomTotal = await mockAPI((baseUrl) => ({
       total: 1234,
       results: baseUrl,
     }));
-    const client = new SearchAPIWithACustomTotal();
-    const results = await client.total("Micro pigs");
+    const api = new SearchAPIWithACustomTotal();
+    const results = await api.total("Micro pigs");
     assert.is(results, 1234);
   });
 
-  test("queue", async (assert) => {
+  test("events", async (assert) => {
     const queries = ["Register to vote", "Micro pig", "Equality Act 2010"];
     assert.plan(queries.length);
 
     let count = 0;
-    const client = new SearchAPI();
-    client.queue.on("completed", (response) => {
-      assert.deepEqual(
-        String(response.results.href),
-        "https://www.gov.uk/api/search.json?" +
-          new URLSearchParams({ q: queries[count] })
-      );
-      count++;
+    const api = new SearchAPI();
+    queries.forEach((query) => api.get(query));
+    return new Promise((resolve) => {
+      api.on("data", (result) => {
+        assert.deepEqual(
+          String(result.href),
+          "https://www.gov.uk/api/search.json?" +
+            new URLSearchParams({ q: queries[count] })
+        );
+        count++;
+        if (count === 3) {
+          resolve();
+        }
+      });
     });
-    queries.forEach((query) => client.get(query));
-    await client.queue.onIdle();
   });
 }
 suite();

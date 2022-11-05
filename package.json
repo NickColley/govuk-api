@@ -3,8 +3,17 @@
   "name": "@nickcolley/govuk",
   "description": "Node.js API client for GOV.UK",
   "version": "0.0.1",
-  "main": "index.js",
+  "source": "index.js",
+  "exports": {
+    "require": "./dist/index.cjs",
+    "default": "./dist/index.modern.js"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.module.js",
+  "unpkg": "./dist/index.umd.js",
   "scripts": {
+    "build": "microbundle build --external none --alias node-fetch=unfetch,debug=debug.browser.js",
+    "build:dev": "microbundle build --external none --alias node-fetch=unfetch",
     "test": "npm run lint && npm run ava:coverage",
     "ava:coverage": "NODE_OPTIONS=--loader=esmock c8 --100 ava",
     "ava": "NODE_OPTIONS=--loader=esmock ava",
@@ -19,8 +28,10 @@
   "dependencies": {
     "async-retry": "^1.3.3",
     "debug": "^4.3.4",
+    "eventemitter3": "^4.0.7",
     "node-fetch": "^3.2.10",
-    "p-queue": "^7.3.0"
+    "throttled-queue": "^2.1.4",
+    "unfetch": "^4.2.0"
   },
   "devDependencies": {
     "ava": "^5.0.1",
@@ -31,6 +42,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "esmock": "^2.0.7",
     "JSONStream": "^1.3.5",
+    "microbundle": "^0.15.1",
     "prettier": "^2.7.1"
   },
   "engines": {

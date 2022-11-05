@@ -1,5 +1,4 @@
 node_modules/
-
 coverage/
-
-data.json
+dist/
+examples/data.json
