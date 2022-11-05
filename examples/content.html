@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GOVUK API in the browsers</title>
+  </head>
+  <body>
+    <h1>Micro pig content item - browser example</h1>
+    <p>
+      Does not work because of CORs not being configured on the content api,
+      maybe they'd accept a contribution or would need a proxy server?
+    </p>
+    <script type="module">
+      import { ContentAPI } from "../index.js";
+      const api = new ContentAPI();
+      const results = await api.get("register-to-vote");
+      console.log({ results });
+    </script>
+  </body>
+</html>

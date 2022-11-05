@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GOVUK API in the browsers</title>
+  </head>
+  <body>
+    <h1>Tribunals relating to potatos - browser example</h1>
+    <script type="module">
+      import { SearchAPI } from "../index.js";
+      const filter_format = "employment_tribunal_decision";
+      const fields = ["title", "link", "indexable_content"];
+      const api = new SearchAPI({ fields, filter_format });
+      const results = await api.getAll("potato");
+      // TODO Figure out streaming/event approach;
+      results.forEach((result) => {
+        const heading = document.createElement("h2");
+        const link = document.createElement("a");
+        link.textContent = result.title;
+        link.href = `https://gov.uk${result.link}`;
+        heading.append(link);
+        document.body.append(heading);
+
+        const paragraph = document.createElement("p");
+        paragraph.innerHTML = result.indexable_content.replace(
+          /[\r\n]/gm,
+          "<br>"
+        );
+        document.body.append(paragraph);
+      });
+    </script>
+  </body>
+</html>
