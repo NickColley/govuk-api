@@ -6,35 +6,48 @@ Node.js API for GOV.UK Content and Search APIs.
 
 ## Getting started
 
+### Node
+
 ```bash
 npm install @nickcolley/govuk
 ```
 
 ```javascript
 // index.mjs;
-import { SearchAPI } from "@nickcolley/govuk";
+import { SearchAPI, ContentAPI } from "@nickcolley/govuk";
 
-(async () => {
-  const api = new SearchAPI();
-  const results = await api.get("Potato");
-  results.map((result) => console.log(result.title));
-})();
+async function main() {
+  const searchApi = new SearchAPI();
+  const contentApi = new ContentAPI();
+
+  const results = await searchApi.get("Keeping a pet pig");
+  // Find the first result that is closest...
+  const searchItem = results.find((item) => item.title.includes("micropig"));
+  const contentItem = await contentApi.get(searchItem.link);
+
+  console.log(contentItem);
+}
+main();
 ```
 
 ```bash
 node index.mjs
 ```
 
-Check out the [full code examples](./examples/).
+### Browser
 
-## CommonJS
-
-```javascript
-// index.cjs;
-(async () => {
-  const { SearchAPI } = await import("@nickcolley/govuk");
+```html
+<!-- index.html -->
+<script type="module">
+  import { SearchAPI } from "https://unpkg.com/@nickcolley/govuk";
   const api = new SearchAPI();
   const results = await api.get("Potato");
-  results.map((result) => console.log(result.title));
-})();
+  document.write(
+    results
+      .map((item) => `<a href="https://gov.uk${item.link}">${item.title}</a>`)
+      .join("<br>")
+  );
+</script>
 ```
+
+Check out the [full code examples](./examples/).
