@@ -36,6 +36,8 @@ node index.mjs
 
 ### Browser
 
+> ContentAPI does not work in the browser because [CORS headers are not set correctly](https://github.com/NickColley/govuk/issues/1).
+
 ```html
 <!-- index.html -->
 <script type="module">
