@@ -18,7 +18,8 @@
     "ava:coverage": "NODE_OPTIONS='--no-warnings --loader=esmock' c8 --100 ava",
     "ava": "NODE_OPTIONS='--no-warnings --loader=esmock' ava",
     "lint": "eslint *.js src/*.js && prettier --check *.js src/*.js",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "commit": "commit"
   },
   "license": "MIT",
   "files": [
@@ -33,6 +34,9 @@
     "unfetch": "^4.2.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
+    "@commitlint/prompt-cli": "^17.1.2",
     "ava": "^5.0.1",
     "c8": "^7.12.0",
     "eslint": "^8.25.0",
