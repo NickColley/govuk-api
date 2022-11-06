@@ -10,13 +10,4 @@ Node.js API for GOV.UK Content and Search APIs.
 npm install @nickcolley/govuk
 ```
 
-```javascript
-async function main() {
-  const searchAPI = new SearchAPI();
-  const result = await searchAPI.get("Register to vote");
-  console.log(result);
-}
-main();
-```
-
-See ./examples for [full code examples](./examples/).
+Check out the [full code examples](./examples/).
