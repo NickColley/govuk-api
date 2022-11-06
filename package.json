@@ -6,9 +6,9 @@
   "source": "index.js",
   "main": "index.js",
   "module": "index.modern.js",
-  "unpkg": "index.umd.js",
+  "unpkg": "index.modern.js",
   "scripts": {
-    "build": "microbundle build --format modern,umd --external none --alias node-fetch=unfetch,debug=src/debug.browser.js",
+    "build": "microbundle build --format modern --external none --alias node-fetch=unfetch,debug=src/debug.browser.js",
     "test": "npm run lint && npm run ava:coverage",
     "ava:coverage": "NODE_OPTIONS='--no-warnings --loader=esmock' c8 --100 ava",
     "ava": "NODE_OPTIONS='--no-warnings --loader=esmock' ava",
@@ -21,7 +21,8 @@
     "index.js",
     "src/content.js",
     "src/search.js",
-    "dist/"
+    "index.modern.js",
+    "index.modern.js.map"
   ],
   "dependencies": {
     "async-retry": "^1.3.3",
