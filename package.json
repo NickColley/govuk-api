@@ -4,16 +4,11 @@
   "description": "Node.js API client for GOV.UK",
   "version": "0.0.0-development",
   "source": "index.js",
-  "exports": {
-    "require": "./dist/index.cjs",
-    "default": "./index.js"
-  },
-  "main": "./dist/index.cjs",
-  "module": "./index.js",
-  "unpkg": "./dist/index.umd.js",
+  "main": "index.js",
+  "module": "index.modern.js",
+  "unpkg": "index.umd.js",
   "scripts": {
-    "build": "microbundle build --format cjs,umd --external none --alias node-fetch=unfetch,debug=src/debug.browser.js",
-    "build:dev": "microbundle build --format cjs,umd --external none --alias node-fetch=unfetch",
+    "build": "microbundle build --format modern,umd --external none --alias node-fetch=unfetch,debug=src/debug.browser.js",
     "test": "npm run lint && npm run ava:coverage",
     "ava:coverage": "NODE_OPTIONS='--no-warnings --loader=esmock' c8 --100 ava",
     "ava": "NODE_OPTIONS='--no-warnings --loader=esmock' ava",

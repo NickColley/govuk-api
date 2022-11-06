@@ -1,4 +1,7 @@
 node_modules/
 coverage/
-dist/
+index.umd.js
+index.umd.js.map
+index.modern.js
+index.modern.js.map
 examples/data.json
