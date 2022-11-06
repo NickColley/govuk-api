@@ -1,4 +1,4 @@
-import ContentAPI from "./content.js";
-import SearchAPI from "./search.js";
+import ContentAPI from "./src/content.js";
+import SearchAPI from "./src/search.js";
 
 export { SearchAPI, ContentAPI };

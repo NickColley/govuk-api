@@ -2,7 +2,7 @@
   "type": "module",
   "name": "@nickcolley/govuk",
   "description": "Node.js API client for GOV.UK",
-  "version": "0.0.1",
+  "version": "0.0.0-development",
   "source": "index.js",
   "exports": {
     "require": "./dist/index.cjs",
@@ -12,23 +12,17 @@
   "module": "./dist/index.module.js",
   "unpkg": "./dist/index.umd.js",
   "scripts": {
-    "build": "microbundle build --external none --alias node-fetch=unfetch,debug=debug.browser.js",
+    "build": "microbundle build --external none --alias node-fetch=unfetch,debug=src/debug.browser.js",
     "build:dev": "microbundle build --external none --alias node-fetch=unfetch",
     "test": "npm run lint && npm run ava:coverage",
-    "ava:coverage": "NODE_OPTIONS=--loader=esmock c8 --100 ava",
-    "ava": "NODE_OPTIONS=--loader=esmock ava",
-    "lint": "eslint *.js && prettier --check *.js"
+    "ava:coverage": "NODE_OPTIONS='--no-warnings --loader=esmock' c8 --100 ava",
+    "ava": "NODE_OPTIONS='--no-warnings --loader=esmock' ava",
+    "lint": "eslint *.js src/*.js && prettier --check *.js src/*.js",
+    "semantic-release": "semantic-release"
   },
   "license": "MIT",
   "files": [
-    "index.js",
-    "search.js",
-    "content.js",
-    "dist/index.cjs",
-    "dist/index.modern.js",
-    "dist/index.cjs",
-    "dist/index.module.js",
-    "dist/index.umd.js"
+    "dist/"
   ],
   "dependencies": {
     "async-retry": "^1.3.3",
@@ -48,7 +42,8 @@
     "esmock": "^2.0.7",
     "JSONStream": "^1.3.5",
     "microbundle": "^0.15.1",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "semantic-release": "^19.0.5"
   },
   "engines": {
     "node": "16.x"
