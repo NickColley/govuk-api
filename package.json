@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@nickcolley/govuk",
-  "description": "Node.js API client for GOV.UK",
+  "description": "Node.js API for GOV.UK Content and Search APIs",
   "version": "0.0.0-development",
   "source": "index.js",
   "main": "index.js",
