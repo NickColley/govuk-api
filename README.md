@@ -37,7 +37,7 @@ node index.js
 
 ### Browser
 
-> ContentAPI does not work in the browser because [CORS headers are not set correctly](https://github.com/NickColley/govuk/issues/1).
+> ContentAPI does not work in the browser because [CORS headers are not set correctly](https://github.com/alphagov/content-store/issues/1006).
 
 ```html
 <!-- index.html -->
