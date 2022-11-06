@@ -9,11 +9,12 @@ Node.js API for GOV.UK Content and Search APIs.
 ### Node
 
 ```bash
+npm init mjs -y # initialise module-ready package
 npm install @nickcolley/govuk
 ```
 
 ```javascript
-// index.mjs;
+// index.js;
 import { SearchAPI, ContentAPI } from "@nickcolley/govuk";
 
 async function main() {
@@ -31,7 +32,7 @@ main();
 ```
 
 ```bash
-node index.mjs
+node index.js
 ```
 
 ### Browser
