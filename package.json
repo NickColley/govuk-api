@@ -6,14 +6,14 @@
   "source": "index.js",
   "exports": {
     "require": "./dist/index.cjs",
-    "default": "./dist/index.modern.js"
+    "default": "./index.js"
   },
   "main": "./dist/index.cjs",
-  "module": "./dist/index.module.js",
+  "module": "./index.js",
   "unpkg": "./dist/index.umd.js",
   "scripts": {
-    "build": "microbundle build --external none --alias node-fetch=unfetch,debug=src/debug.browser.js",
-    "build:dev": "microbundle build --external none --alias node-fetch=unfetch",
+    "build": "microbundle build --format cjs,umd --external none --alias node-fetch=unfetch,debug=src/debug.browser.js",
+    "build:dev": "microbundle build --format cjs,umd --external none --alias node-fetch=unfetch",
     "test": "npm run lint && npm run ava:coverage",
     "ava:coverage": "NODE_OPTIONS='--no-warnings --loader=esmock' c8 --100 ava",
     "ava": "NODE_OPTIONS='--no-warnings --loader=esmock' ava",
@@ -23,6 +23,9 @@
   },
   "license": "MIT",
   "files": [
+    "index.js",
+    "src/content.js",
+    "src/search.js",
     "dist/"
   ],
   "dependencies": {
