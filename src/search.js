@@ -148,6 +148,7 @@ export default class SearchAPI extends EventEmitter {
    * Get all pages of search items for a query
    * @param {string|Options} queryOrOptions
    * @param {Options} [options]
+   * @param {number} options.total cap the maximum amount of results
    * @fires SearchAPI#data search items
    * @returns {Promise} search items
    */

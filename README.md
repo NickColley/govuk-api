@@ -149,10 +149,11 @@ api.get("Micro pig");
 
 Get all pages of search items for a query.
 
-| Parameter      | Type                                                    | Required |
-| -------------- | ------------------------------------------------------- | -------- |
+| Parameter      | Type                                                    | Required | Description               |
+| -------------- | ------------------------------------------------------- | -------- | ------------------------- |
 | queryOrOptions | <code>string</code> \| [<code>Options</code>](#options) | true     |
 | [options]      | [<code>Options</code>](#options)                        | false    |
+| options.total  | number                                                  | false    | maximum amount of results |
 
 #### Getting data from resolved promise
 
