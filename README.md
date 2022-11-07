@@ -4,6 +4,12 @@ JavaScript API for GOV.UK Content and Search APIs.
 
 [![GOVUK API latest npm version](https://img.shields.io/npm/v/@nickcolley/govuk.svg?v=2)](https://www.npmjs.com/package/@nickcolley/govuk)
 
+## Contents
+
+- [Getting started](#getting-started)
+- [Content API](#content-api)
+- [Search API](#search-api)
+
 ## Getting started
 
 ### Node
@@ -51,3 +57,37 @@ node index.js
 ```
 
 Check out the [full code examples](./examples/).
+
+## Search API
+
+[TODO]
+
+## Content API
+
+### get(path)
+
+| Parameter | Type   | Required | Description                                                                                                  |
+| --------- | ------ | -------- | ------------------------------------------------------------------------------------------------------------ |
+| path      | string | true     | The path to the content on GOV.UK e.g for `https://www.gov.uk/register-to-vote` you’d use `register-to-vote` |
+
+Returns a [content item](https://content-api.publishing.service.gov.uk/reference.html#contentitem) from a promise or emitted by the 'data' event.
+
+#### Getting data from resolved promise
+
+```javascript
+import { ContentAPI } from "@nickcolley/govuk";
+const api = new ContentAPI();
+const contentItem = await api.get("Register-to-vote");
+console.log(contentItem);
+```
+
+#### Getting data from event
+
+```javascript
+import { ContentAPI } from "@nickcolley/govuk";
+const api = new ContentAPI();
+api.on("data", (contentItem) => {
+  console.log(contentItem);
+});
+api.get("Register-to-vote");
+```

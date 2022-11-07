@@ -15,11 +15,21 @@ const throttle = throttledQueue(
   true
 );
 
+/**
+ * ContentAPI
+ * @constructor
+ */
 export default class ContentAPI extends EventEmitter {
   constructor() {
     super();
   }
 
+  /**
+   * Get a content item
+   * @param {string} path - path for content item
+   * @fires ContentAPI#data content item json
+   * @returns {Promise} content item json
+   */
   async get(path) {
     if (!path) {
       throw new Error("No content item path");
