@@ -128,7 +128,8 @@ export default class SearchAPI extends EventEmitter {
       if (
         key.startsWith("filter_") ||
         key.startsWith("reject_") ||
-        key.startsWith("aggregate_")
+        key.startsWith("aggregate_") ||
+        key.startsWith("facet_")
       ) {
         params.append(key, otherOptions[key]);
       }

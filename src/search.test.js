@@ -152,6 +152,18 @@ async function suite() {
     );
   });
 
+  test("get › should allow grouped facets", async (assert) => {
+    const api = new SearchAPI();
+    const results = await api.get({
+      facet_organisations: 1000,
+      count: 0,
+    });
+    assert.deepEqual(
+      String(results),
+      "https://www.gov.uk/api/search.json?count=0&facet_organisations=1000"
+    );
+  });
+
   test("getAll › should blow up with no search query", async (assert) => {
     const api = new SearchAPI();
     await assert.throwsAsync(

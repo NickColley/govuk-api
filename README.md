@@ -226,3 +226,4 @@ console.log(totalResults);
 | filter\_[field]    | <code>string</code> | field to filter by    |
 | aggregate\_[field] | <code>string</code> | field to aggregate by |
 | reject\_[field]    | <code>string</code> | field to reject by    |
+| facet\_[field]     | <code>string</code> | group by field        |
