@@ -214,6 +214,23 @@ const totalResults = await api.total("Micro pig");
 console.log(totalResults);
 ```
 
+### facets(field)
+
+Get facets for a field.
+
+| Parameter | Type     | Required |
+| --------- | -------- | -------- |
+| field     | `string` | true     |
+
+#### Getting facets from resolved promise
+
+```javascript
+import { SearchAPI } from "@nickcolley/govuk";
+const api = new SearchAPI();
+const facets = await api.facets("formats");
+console.log(facets);
+```
+
 ### Options
 
 [You can use any options available in the Search API](https://docs.publishing.service.gov.uk/repos/search-api/using-the-search-api.html).

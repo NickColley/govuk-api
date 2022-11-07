@@ -251,6 +251,23 @@ async function suite() {
     );
   });
 
+  test("facets › should show facets available for field", async (assert) => {
+    const SearchAPIWithSingleResult = await mockAPI((baseUrl) => ({
+      total: 1,
+      facets: {
+        format: {
+          options: [baseUrl],
+        },
+      },
+    }));
+    const api = new SearchAPIWithSingleResult();
+    const result = await api.facets("format");
+    assert.deepEqual(
+      String(result),
+      "https://www.gov.uk/api/search.json?count=0&facet_format=10000"
+    );
+  });
+
   test("events", async (assert) => {
     const queries = ["Register to vote", "Micro pig", "Equality Act 2010"];
     assert.plan(queries.length);

@@ -230,4 +230,17 @@ export default class SearchAPI extends EventEmitter {
     const results = response.results || [];
     return results ? results[0] : {};
   }
+
+  /**
+   * Get facets for field
+   * @param {string} field - name of field to group by
+   * @returns {Promise} facets for field
+   */
+  async facets(field) {
+    const response = await this.#get({
+      [`facet_${field}`]: 10000, // Just a big number to get all of them...
+      count: 0,
+    });
+    return response?.facets[field]?.options || [];
+  }
 }
