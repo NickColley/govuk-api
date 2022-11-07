@@ -106,10 +106,10 @@ Implements the [GOV.UK Search API](https://docs.publishing.service.gov.uk/repos/
 
 Set the default query and options for all other calls to `get`, `getAll` and `total` methods
 
-| Parameter      | Type                                                    | Required |
-| -------------- | ------------------------------------------------------- | -------- |
-| queryOrOptions | <code>string</code> \| [<code>Options</code>](#options) | true     |
-| [options]      | [<code>Options</code>](#options)                        | false    |
+| Parameter      | Type                              | Required |
+| -------------- | --------------------------------- | -------- |
+| queryOrOptions | `string` \| [`Options`](#options) | true     |
+| [options]      | [`Options`](#options)             | false    |
 
 #### Getting data from resolved promise
 
@@ -124,10 +124,10 @@ console.log(searchResults);
 
 Get first page of search items for a query
 
-| Parameter      | Type                                                    | Required |
-| -------------- | ------------------------------------------------------- | -------- |
-| queryOrOptions | <code>string</code> \| [<code>Options</code>](#options) | true     |
-| [options]      | [<code>Options</code>](#options)                        | false    |
+| Parameter      | Type                              | Required |
+| -------------- | --------------------------------- | -------- |
+| queryOrOptions | `string` \| [`Options`](#options) | true     |
+| [options]      | [`Options`](#options)             | false    |
 
 #### Getting data from resolved promise
 
@@ -153,11 +153,11 @@ api.get("Micro pig");
 
 Get all pages of search items for a query.
 
-| Parameter      | Type                                                    | Required | Description               |
-| -------------- | ------------------------------------------------------- | -------- | ------------------------- |
-| queryOrOptions | <code>string</code> \| [<code>Options</code>](#options) | true     |
-| [options]      | [<code>Options</code>](#options)                        | false    |
-| options.total  | number                                                  | false    | maximum amount of results |
+| Parameter      | Type                              | Required | Description               |
+| -------------- | --------------------------------- | -------- | ------------------------- |
+| queryOrOptions | `string` \| [`Options`](#options) | true     |
+| [options]      | [`Options`](#options)             | false    |
+| options.total  | number                            | false    | maximum amount of results |
 
 #### Getting data from resolved promise
 
@@ -183,9 +183,9 @@ api.getAll("Micro pig");
 
 Get metadata for a content item.
 
-| Parameter | Type   | Required | Description                                                                                                  |
-| --------- | ------ | -------- | ------------------------------------------------------------------------------------------------------------ |
-| path      | string | true     | The path to the content on GOV.UK e.g for `https://www.gov.uk/register-to-vote` you’d use `register-to-vote` |
+| Parameter | Type     | Required | Description                                                                                                  |
+| --------- | -------- | -------- | ------------------------------------------------------------------------------------------------------------ |
+| path      | `string` | true     | The path to the content on GOV.UK e.g for `https://www.gov.uk/register-to-vote` you’d use `register-to-vote` |
 
 #### Getting info from resolved promise
 
@@ -200,10 +200,10 @@ console.log(contentInfo);
 
 Get total amount of search items for a query.
 
-| Parameter      | Type                                                    | Required |
-| -------------- | ------------------------------------------------------- | -------- |
-| queryOrOptions | <code>string</code> \| [<code>Options</code>](#options) | true     |
-| [options]      | [<code>Options</code>](#options)                        | false    |
+| Parameter      | Type                              | Required |
+| -------------- | --------------------------------- | -------- |
+| queryOrOptions | `string` \| [`Options`](#options) | true     |
+| [options]      | [`Options`](#options)             | false    |
 
 #### Getting total from resolved promise
 
@@ -235,29 +235,29 @@ console.log(facets);
 
 [You can use any options available in the Search API](https://docs.publishing.service.gov.uk/repos/search-api/using-the-search-api.html).
 
-| Name | Type                | Description  |
-| ---- | ------------------- | ------------ |
-| q    | <code>string</code> | search query |
+| Name | Type     | Description  |
+| ---- | -------- | ------------ |
+| q    | `string` | search query |
 
 #### [Pagination options](https://docs.publishing.service.gov.uk/repos/search-api/using-the-search-api.html#pagination)
 
-| Name  | Type                | Description                 |
-| ----- | ------------------- | --------------------------- |
-| start | <code>number</code> | position to start           |
-| count | <code>number</code> | number of results to return |
-| order | <code>string</code> | sort order                  |
+| Name  | Type     | Description                 |
+| ----- | -------- | --------------------------- |
+| start | `number` | position to start           |
+| count | `number` | number of results to return |
+| order | `string` | sort order                  |
 
 #### [Field options](https://docs.publishing.service.gov.uk/repos/search-api/using-the-search-api.html#returning-specific-document-fields)
 
-| Name   | Type               | Description                         |
-| ------ | ------------------ | ----------------------------------- |
-| fields | <code>Array</code> | properties to return in search item |
+| Name   | Type    | Description                         |
+| ------ | ------- | ----------------------------------- |
+| fields | `Array` | properties to return in search item |
 
 #### [Faceted options](https://docs.publishing.service.gov.uk/repos/search-api/public-api/faceted-search)
 
-| Name               | Type                | Description           |
-| ------------------ | ------------------- | --------------------- |
-| filter\_[field]    | <code>string</code> | field to filter by    |
-| aggregate\_[field] | <code>string</code> | field to aggregate by |
-| reject\_[field]    | <code>string</code> | field to reject by    |
-| facet\_[field]     | <code>string</code> | group by field        |
+| Name               | Type     | Description           |
+| ------------------ | -------- | --------------------- |
+| filter\_[field]    | `string` | field to filter by    |
+| aggregate\_[field] | `string` | field to aggregate by |
+| reject\_[field]    | `string` | field to reject by    |
+| facet\_[field]     | `string` | group by field        |
