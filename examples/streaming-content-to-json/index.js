@@ -6,9 +6,9 @@ const query = "Potato";
 console.log(`Getting tribunal decisions for query "${query}"...`);
 console.time("Finished");
 
-const filter_format = "employment_tribunal_decision";
+const format = "employment_tribunal_decision";
 const fields = ["title", "link"];
-const searchAPI = new SearchAPI({ fields, filter_format });
+const searchAPI = new SearchAPI({ fields, filter: { format } });
 
 const total = await searchAPI.total(query);
 console.log(`Found ${total} items, getting results...`);
