@@ -273,6 +273,13 @@ async function suite() {
     );
   });
 
+  test("info › should return empty info if falsey results", async (assert) => {
+    const SearchAPIWithFalseyResults = await mockAPI(() => ({}));
+    const api = new SearchAPIWithFalseyResults();
+    const results = await api.info("register-to-vote");
+    assert.deepEqual(results, {});
+  });
+
   test("facets › should show facets available for field", async (assert) => {
     const SearchAPIWithSingleResult = await mockAPI((baseUrl) => ({
       total: 1,
@@ -288,6 +295,13 @@ async function suite() {
       String(result),
       "https://www.gov.uk/api/search.json?count=0&facet_format=10000"
     );
+  });
+
+  test("facets › should return empty facets if falsey results", async (assert) => {
+    const SearchAPIWithFalseyResults = await mockAPI(() => ({}));
+    const api = new SearchAPIWithFalseyResults();
+    const results = await api.facets("format");
+    assert.deepEqual(results, []);
   });
 
   test("events", async (assert) => {

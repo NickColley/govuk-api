@@ -245,8 +245,7 @@ export default class SearchAPI extends EventEmitter {
       },
       count: 1,
     });
-    const results = response.results || [];
-    return results ? results[0] : {};
+    return response?.results ? response.results[0] : {};
   }
 
   /**
@@ -261,6 +260,6 @@ export default class SearchAPI extends EventEmitter {
       },
       count: 0,
     });
-    return response?.facets[field]?.options || [];
+    return response?.facets ? response.facets[field]?.options : [];
   }
 }
