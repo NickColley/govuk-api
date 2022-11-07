@@ -16,18 +16,15 @@ npm install @nickcolley/govuk
 // index.mjs;
 import { SearchAPI, ContentAPI } from "@nickcolley/govuk";
 
-async function main() {
-  const searchApi = new SearchAPI();
-  const contentApi = new ContentAPI();
+const searchApi = new SearchAPI();
+const contentApi = new ContentAPI();
 
-  const results = await searchApi.get("Keeping a pet pig");
-  // Find the first result that is closest...
-  const searchItem = results.find((item) => item.title.includes("micropig"));
-  const contentItem = await contentApi.get(searchItem.link);
+const results = await searchApi.get("Keeping a pet pig");
+// Find the first result that is closest...
+const searchItem = results.find((item) => item.title.includes("micropig"));
+const contentItem = await contentApi.get(searchItem.link);
 
-  console.log(contentItem);
-}
-main();
+console.log(contentItem);
 ```
 
 ```bash
