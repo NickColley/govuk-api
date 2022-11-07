@@ -59,7 +59,7 @@ node index.js
 
 ## Examples
 
-- [Streaming content items to json file](./examples/streaming-content-to-json-file.js)
+- [Streaming content items to json file](./examples/streaming-content-to-json/index.js)
 - [Client-side browser Employment Tribunal Decision search](https://hello-govuk-api.glitch.me/) ([source](https://glitch.com/edit/#!/hello-govuk-api))
 
 Check out the [full code examples](./examples/).
