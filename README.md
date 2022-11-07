@@ -1,6 +1,6 @@
-# GOV.UK JavaScript API
+# GOV.UK API Client
 
-JavaScript API for GOV.UK Content and Search APIs.
+JavaScript API client for GOV.UK Content and Search APIs.
 
 [![GOVUK API latest npm version](https://img.shields.io/npm/v/@nickcolley/govuk.svg?v=2)](https://www.npmjs.com/package/@nickcolley/govuk)
 
