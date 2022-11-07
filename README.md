@@ -7,6 +7,7 @@ JavaScript API for GOV.UK Content and Search APIs.
 ## Contents
 
 - [Getting started](#getting-started)
+- [Examples](#examples)
 - [Content API](#content-api)
 - [Search API](#search-api)
 
@@ -55,6 +56,11 @@ node index.js
   );
 </script>
 ```
+
+## Examples
+
+- [Streaming content items to json file](./examples/streaming-content-to-json-file.js)
+- [Client-side browser Employment Tribunal Decision search](https://hello-govuk-api.glitch.me/) ([source](https://glitch.com/edit/#!/hello-govuk-api))
 
 Check out the [full code examples](./examples/).
 
