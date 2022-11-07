@@ -164,6 +164,28 @@ async function suite() {
     );
   });
 
+  test("get › should use syntax sugar for filters and facets", async (assert) => {
+    const api = new SearchAPI();
+    const results = await api.get({
+      filter: {
+        format: "statistics_announcement",
+      },
+      reject: {
+        format: "statistics_announcement",
+      },
+      aggregate: {
+        format: "statistics_announcement",
+      },
+      facet: {
+        format: "1000",
+      },
+    });
+    assert.deepEqual(
+      String(results),
+      "https://www.gov.uk/api/search.json?filter_format=statistics_announcement&reject_format=statistics_announcement&aggregate_format=statistics_announcement&facet_format=1000"
+    );
+  });
+
   test("getAll › should blow up with no search query", async (assert) => {
     const api = new SearchAPI();
     await assert.throwsAsync(

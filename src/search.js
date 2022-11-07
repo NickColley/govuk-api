@@ -15,6 +15,21 @@ const throttle = throttledQueue(
   true
 );
 
+// { filter: { format: "guides" } } => { filter_format: "guides" }
+function flattenNestedToSnakeCase(options = {}) {
+  const snakeOptions = { ...options };
+  Object.keys(options).forEach((key) => {
+    const group = options[key];
+    if (typeof group === "object") {
+      Object.keys(group).forEach((value) => {
+        snakeOptions[key + "_" + value] = group[value];
+      });
+      delete snakeOptions[key];
+    }
+  });
+  return snakeOptions;
+}
+
 const getStartValues = (total, count) => {
   if (!total || !count) {
     return [];
@@ -124,14 +139,15 @@ export default class SearchAPI extends EventEmitter {
       });
     }
     // https://docs.publishing.service.gov.uk/repos/search-api/using-the-search-api.html#using-faceted-search-parameters
-    Object.keys(otherOptions).forEach((key) => {
+    const snakeOptions = flattenNestedToSnakeCase(otherOptions);
+    Object.keys(snakeOptions).forEach((key) => {
       if (
         key.startsWith("filter_") ||
         key.startsWith("reject_") ||
         key.startsWith("aggregate_") ||
         key.startsWith("facet_")
       ) {
-        params.append(key, otherOptions[key]);
+        params.append(key, snakeOptions[key]);
       }
     });
     baseUrl.search = params;
@@ -224,7 +240,9 @@ export default class SearchAPI extends EventEmitter {
       trimmedPath = path.substring(1);
     }
     const response = await this.#get({
-      filter_link: "/" + trimmedPath,
+      filter: {
+        link: "/" + trimmedPath,
+      },
       count: 1,
     });
     const results = response.results || [];
@@ -238,7 +256,9 @@ export default class SearchAPI extends EventEmitter {
    */
   async facets(field) {
     const response = await this.#get({
-      [`facet_${field}`]: 10000, // Just a big number to get all of them...
+      facet: {
+        [field]: 10000, // Just a big number to get all of them...
+      },
       count: 0,
     });
     return response?.facets[field]?.options || [];

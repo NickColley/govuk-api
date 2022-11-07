@@ -255,9 +255,9 @@ console.log(facets);
 
 #### [Faceted options](https://docs.publishing.service.gov.uk/repos/search-api/public-api/faceted-search)
 
-| Name               | Type     | Description           |
-| ------------------ | -------- | --------------------- |
-| filter\_[field]    | `string` | field to filter by    |
-| aggregate\_[field] | `string` | field to aggregate by |
-| reject\_[field]    | `string` | field to reject by    |
-| facet\_[field]     | `string` | group by field        |
+| Name              | Type     | Description           |
+| ----------------- | -------- | --------------------- |
+| filter.[field]    | `string` | field to filter by    |
+| aggregate.[field] | `string` | field to aggregate by |
+| reject.[field]    | `string` | field to reject by    |
+| facet.[field]     | `string` | group by field        |
