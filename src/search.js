@@ -101,21 +101,21 @@ export default class SearchAPI extends EventEmitter {
 
     const baseUrl = new URL("https://www.gov.uk/api/search.json");
     const params = new URLSearchParams();
-    if (q) {
+    if (typeof q !== "undefined") {
       params.append("q", q);
     }
     // https://docs.publishing.service.gov.uk/repos/search-api/using-the-search-api.html#pagination
-    if (count) {
+    if (typeof count !== "undefined") {
       params.append("count", count);
     }
-    if (start) {
+    if (typeof start !== "undefined") {
       params.append("start", start);
     }
-    if (order) {
+    if (typeof order !== "undefined") {
       params.append("order", order);
     }
     // https://github.com/alphagov/search-api/blob/main/config/schema/field_definitions.json
-    if (fields) {
+    if (typeof fields !== "undefined") {
       if (!(fields instanceof Array)) {
         throw new Error("Fields parameter must be an array");
       }

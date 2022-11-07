@@ -190,7 +190,7 @@ async function suite() {
     assert.deepEqual(
       results.map((result) => String(result)),
       [
-        "https://www.gov.uk/api/search.json?q=Micro+pigs&count=1000",
+        "https://www.gov.uk/api/search.json?q=Micro+pigs&count=1000&start=0",
         "https://www.gov.uk/api/search.json?q=Micro+pigs&count=1000&start=1000",
         "https://www.gov.uk/api/search.json?q=Micro+pigs&count=1000&start=2000",
         "https://www.gov.uk/api/search.json?q=Micro+pigs&count=1000&start=3000",
@@ -205,7 +205,7 @@ async function suite() {
     assert.deepEqual(
       results.map((result) => String(result)),
       [
-        "https://www.gov.uk/api/search.json?q=Micro+pigs&count=990",
+        "https://www.gov.uk/api/search.json?q=Micro+pigs&count=990&start=0",
         "https://www.gov.uk/api/search.json?q=Micro+pigs&count=990&start=990",
         "https://www.gov.uk/api/search.json?q=Micro+pigs&count=990&start=1980",
         "https://www.gov.uk/api/search.json?q=Micro+pigs&count=990&start=2970",
