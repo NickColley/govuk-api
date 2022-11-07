@@ -4,7 +4,6 @@ import retry from "async-retry";
 import debug from "debug";
 import throttledQueue from "throttled-queue";
 
-// https://dataingovernment.blog.gov.uk/2016/05/26/use-the-search-api-to-get-useful-information-about-gov-uk-content/
 // https://docs.publishing.service.gov.uk/repos/search-api/using-the-search-api.html
 // Search API doesnt seem to have a rate limit, so do something sensible.
 // Global throttle between instances, to avoid multiple clients from sending too many requests.
@@ -31,6 +30,24 @@ const getStartValues = (total, count) => {
 
 const MAX_PER_PAGE = 1000;
 
+/**
+ * @typedef {Object} Options
+ * @property {string} q search query
+ * @property {number} start position to start
+ * @property {number} count number of results to return
+ * @property {string} order sort order
+ * @property {Array} fields properties to return in search item
+ * @property {string} filter_[field] properties to filter by
+ * @property {string} aggregate_[field] properties to aggregate by
+ * @property {string} reject_[field] properties to reject by
+ */
+
+/**
+ * GOV.UK Search API
+ * @constructor
+ * @param {string|Options} queryOrOptions
+ * @param {Options} [options]
+ */
 export default class SearchAPI extends EventEmitter {
   constructor() {
     super();
@@ -127,6 +144,13 @@ export default class SearchAPI extends EventEmitter {
     );
   }
 
+  /**
+   * Get all pages of search items for a query
+   * @param {string|Options} queryOrOptions
+   * @param {Options} [options]
+   * @fires SearchAPI#data search items
+   * @returns {Promise} search items
+   */
   async getAll() {
     const { count, total, ...options } = this.#parseArguments(...arguments);
 
@@ -157,6 +181,27 @@ export default class SearchAPI extends EventEmitter {
     return results.flat();
   }
 
+  /**
+   * Get first page of search items for a query
+   * @param {string|Options} queryOrOptions
+   * @param {Options} [options]
+   * @fires SearchAPI#data search items
+   * @returns {Promise} search items
+   */
+  async get() {
+    const options = this.#parseArguments(...arguments);
+    const response = await this.#get(options);
+    const results = response.results || [];
+    this.emit("data", results);
+    return results;
+  }
+
+  /**
+   * Get total amount of search items for a query
+   * @param {string|Options} queryOrOptions
+   * @param {Options} [options]
+   * @returns {Promise} total of results
+   */
   async total() {
     const options = this.#parseArguments(...arguments);
     const response = await this.#get({
@@ -164,13 +209,5 @@ export default class SearchAPI extends EventEmitter {
       count: 0,
     });
     return response.total || undefined;
-  }
-
-  async get() {
-    const options = this.#parseArguments(...arguments);
-    const response = await this.#get(options);
-    const results = response.results || [];
-    this.emit("data", results);
-    return results;
   }
 }

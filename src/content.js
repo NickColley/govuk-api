@@ -16,7 +16,7 @@ const throttle = throttledQueue(
 );
 
 /**
- * ContentAPI
+ * GOV.UK Content API
  * @constructor
  */
 export default class ContentAPI extends EventEmitter {
@@ -27,8 +27,8 @@ export default class ContentAPI extends EventEmitter {
   /**
    * Get a content item
    * @param {string} path - path for content item
-   * @fires ContentAPI#data content item json
-   * @returns {Promise} content item json
+   * @fires ContentAPI#data content item
+   * @returns {Promise} content item
    */
   async get(path) {
     if (!path) {
