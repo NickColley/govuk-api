@@ -179,6 +179,23 @@ api.on("data", (searchResults) => {
 api.getAll("Micro pig");
 ```
 
+### info(path)
+
+Get metadata for a content item.
+
+| Parameter | Type   | Required | Description                                                                                                  |
+| --------- | ------ | -------- | ------------------------------------------------------------------------------------------------------------ |
+| path      | string | true     | The path to the content on GOV.UK e.g for `https://www.gov.uk/register-to-vote` you’d use `register-to-vote` |
+
+#### Getting info from resolved promise
+
+```javascript
+import { SearchAPI } from "@nickcolley/govuk";
+const api = new SearchAPI();
+const contentInfo = await api.info("register-to-vote");
+console.log(contentInfo);
+```
+
 ### total(queryOrOptions, [options])
 
 Get total amount of search items for a query.

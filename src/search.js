@@ -212,4 +212,22 @@ export default class SearchAPI extends EventEmitter {
     });
     return response.total || undefined;
   }
+
+  /**
+   * Get metadata for content item
+   * @param {string} path - path for content item
+   * @returns {Promise} content item metadata
+   */
+  async info(path) {
+    let trimmedPath = path;
+    if (path.startsWith("/")) {
+      trimmedPath = path.substring(1);
+    }
+    const response = await this.#get({
+      filter_link: "/" + trimmedPath,
+      count: 1,
+    });
+    const results = response.results || [];
+    return results ? results[0] : {};
+  }
 }

@@ -221,8 +221,34 @@ async function suite() {
       results: baseUrl,
     }));
     const api = new SearchAPIWithACustomTotal();
-    const results = await api.total("Micro pigs");
-    assert.is(results, 1234);
+    const result = await api.total("Micro pigs");
+    assert.is(result, 1234);
+  });
+
+  test("info › should show info for item", async (assert) => {
+    const SearchAPIWithSingleResult = await mockAPI((baseUrl) => ({
+      total: 1,
+      results: [baseUrl],
+    }));
+    const api = new SearchAPIWithSingleResult();
+    const result = await api.info("register-to-vote");
+    assert.deepEqual(
+      String(result),
+      "https://www.gov.uk/api/search.json?count=1&filter_link=%2Fregister-to-vote"
+    );
+  });
+
+  test("info › should show info for item with path with forward slash", async (assert) => {
+    const SearchAPIWithSingleResult = await mockAPI((baseUrl) => ({
+      total: 1,
+      results: [baseUrl],
+    }));
+    const api = new SearchAPIWithSingleResult();
+    const result = await api.info("/register-to-vote");
+    assert.deepEqual(
+      String(result),
+      "https://www.gov.uk/api/search.json?count=1&filter_link=%2Fregister-to-vote"
+    );
   });
 
   test("events", async (assert) => {
