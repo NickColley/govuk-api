@@ -9,7 +9,7 @@ Node.js API for GOV.UK Content and Search APIs.
 ### Node
 
 ```bash
-npm init mjs -y # initialise module-ready package
+npm init mjs -y # initialise module-ready package.json
 npm install @nickcolley/govuk
 ```
 
