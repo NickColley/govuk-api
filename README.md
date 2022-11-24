@@ -41,19 +41,20 @@ node index.js
 
 ### Browser
 
-> ContentAPI does not work in the browser because [CORS headers are not set correctly](https://github.com/alphagov/content-store/issues/1006).
-
 ```html
 <!-- index.html -->
 <script type="module">
-  import { SearchAPI } from "https://unpkg.com/@nickcolley/govuk";
-  const api = new SearchAPI();
-  const results = await api.get("Potato");
-  document.write(
-    results
-      .map((item) => `<a href="https://gov.uk${item.link}">${item.title}</a>`)
-      .join("<br>")
-  );
+  import { SearchAPI, ContentAPI } from "https://unpkg.com/@nickcolley/govuk";
+
+  const searchApi = new SearchAPI();
+  const contentApi = new ContentAPI();
+
+  const results = await searchApi.get("Keeping a pet pig");
+  // Find the first result that is closest...
+  const searchItem = results.find((item) => item.title.includes("micropig"));
+  const contentItem = await contentApi.get(searchItem.link);
+
+  console.log(contentItem);
 </script>
 ```
 
