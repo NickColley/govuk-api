@@ -87,10 +87,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NickColley/govuk.git"
+    "url": "git+https://github.com/NickColley/govuk-api.git"
   },
   "bugs": {
-    "url": "https://github.com/NickColley/govuk/issues"
+    "url": "https://github.com/NickColley/govuk-api/issues"
   },
-  "homepage": "https://github.com/NickColley/govuk#readme"
+  "homepage": "https://github.com/NickColley/govuk-api#readme"
 }
