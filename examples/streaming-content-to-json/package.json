@@ -10,6 +10,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@nickcolley/govuk": "../../"
+    "govuk-api": "../../"
   }
 }

@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "name": "@nickcolley/govuk",
+  "name": "govuk-api",
   "description": "JavaScript API client for GOV.UK Content and Search APIs.",
   "version": "0.0.0-development",
   "source": "index.js",

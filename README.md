@@ -2,7 +2,7 @@
 
 JavaScript API client for GOV.UK Content and Search APIs.
 
-[![GOVUK API latest npm version](https://img.shields.io/npm/v/@nickcolley/govuk.svg?v=2)](https://www.npmjs.com/package/@nickcolley/govuk)
+[![GOVUK API latest npm version](https://img.shields.io/npm/v/govuk-api.svg?v=2)](https://www.npmjs.com/package/govuk-api)
 
 ## Contents
 
@@ -17,12 +17,12 @@ JavaScript API client for GOV.UK Content and Search APIs.
 
 ```bash
 npm init mjs -y # initialise module-ready package.json
-npm install @nickcolley/govuk
+npm install govuk-api
 ```
 
 ```javascript
 // index.js;
-import { SearchAPI, ContentAPI } from "@nickcolley/govuk";
+import { SearchAPI, ContentAPI } from "govuk-api";
 
 const searchApi = new SearchAPI();
 const contentApi = new ContentAPI();
@@ -44,7 +44,7 @@ node index.js
 ```html
 <!-- index.html -->
 <script type="module">
-  import { SearchAPI, ContentAPI } from "https://unpkg.com/@nickcolley/govuk";
+  import { SearchAPI, ContentAPI } from "https://unpkg.com/govuk-api";
 
   const searchApi = new SearchAPI();
   const contentApi = new ContentAPI();
@@ -80,7 +80,7 @@ Returns a [content item](https://content-api.publishing.service.gov.uk/reference
 #### Getting data from resolved promise
 
 ```javascript
-import { ContentAPI } from "@nickcolley/govuk";
+import { ContentAPI } from "govuk-api";
 const api = new ContentAPI();
 const contentItem = await api.get("Register-to-vote");
 console.log(contentItem);
@@ -89,7 +89,7 @@ console.log(contentItem);
 #### Getting data from event
 
 ```javascript
-import { ContentAPI } from "@nickcolley/govuk";
+import { ContentAPI } from "govuk-api";
 const api = new ContentAPI();
 api.on("data", (contentItem) => {
   console.log(contentItem);
@@ -115,7 +115,7 @@ Set the default query and options for all other calls to `get`, `getAll` and `to
 #### Getting data from resolved promise
 
 ```javascript
-import { SearchAPI } from "@nickcolley/govuk";
+import { SearchAPI } from "govuk-api";
 const api = new SearchAPI("Micro pig", { count: 10 });
 const searchResults = await api.get();
 console.log(searchResults);
@@ -133,7 +133,7 @@ Get first page of search items for a query
 #### Getting data from resolved promise
 
 ```javascript
-import { SearchAPI } from "@nickcolley/govuk";
+import { SearchAPI } from "govuk-api";
 const api = new SearchAPI();
 const searchResults = await api.get("Micro pig");
 console.log(searchResults);
@@ -142,7 +142,7 @@ console.log(searchResults);
 #### Getting data from event
 
 ```javascript
-import { SearchAPI } from "@nickcolley/govuk";
+import { SearchAPI } from "govuk-api";
 const api = new SearchAPI();
 api.on("data", (searchResults) => {
   console.log(searchResults);
@@ -163,7 +163,7 @@ Get all pages of search items for a query.
 #### Getting data from resolved promise
 
 ```javascript
-import { SearchAPI } from "@nickcolley/govuk";
+import { SearchAPI } from "govuk-api";
 const api = new SearchAPI();
 const searchResults = await api.getAll("Micro pig");
 console.log(searchResults);
@@ -172,7 +172,7 @@ console.log(searchResults);
 #### Getting data from event
 
 ```javascript
-import { SearchAPI } from "@nickcolley/govuk";
+import { SearchAPI } from "govuk-api";
 const api = new SearchAPI();
 api.on("data", (searchResults) => {
   console.log(searchResults);
@@ -191,7 +191,7 @@ Get metadata for a content item.
 #### Getting info from resolved promise
 
 ```javascript
-import { SearchAPI } from "@nickcolley/govuk";
+import { SearchAPI } from "govuk-api";
 const api = new SearchAPI();
 const contentInfo = await api.info("register-to-vote");
 console.log(contentInfo);
@@ -209,7 +209,7 @@ Get total amount of search items for a query.
 #### Getting total from resolved promise
 
 ```javascript
-import { SearchAPI } from "@nickcolley/govuk";
+import { SearchAPI } from "govuk-api";
 const api = new SearchAPI();
 const totalResults = await api.total("Micro pig");
 console.log(totalResults);
@@ -226,7 +226,7 @@ Get facets for a field.
 #### Getting facets from resolved promise
 
 ```javascript
-import { SearchAPI } from "@nickcolley/govuk";
+import { SearchAPI } from "govuk-api";
 const api = new SearchAPI();
 const facets = await api.facets("formats");
 console.log(facets);
