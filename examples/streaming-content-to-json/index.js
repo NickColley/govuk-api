@@ -1,5 +1,5 @@
 import { createWriteStream } from "node:fs";
-import { ContentAPI, SearchAPI } from "govuk-api";
+import { ContentAPI, SearchAPI } from "govuk";
 import JSONTransform from "./json-transform.js";
 
 const query = "Potato";

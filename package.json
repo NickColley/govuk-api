@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "name": "govuk-api",
+  "name": "govuk",
   "description": "JavaScript API client for GOV.UK Content and Search APIs.",
   "version": "0.0.0-development",
   "source": "index.js",
@@ -48,7 +48,7 @@
     "semantic-release": "^19.0.5"
   },
   "engines": {
-    "node": "16.x"
+    "node": ">=16.x"
   },
   "publishConfig": {
     "access": "public"
